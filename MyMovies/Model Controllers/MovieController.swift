@@ -10,15 +10,13 @@ import Foundation
 import CoreData
 
 enum HTTPMethod: String {
-    
-    case get = "GET" // read only
-    case put = "PUT" // create data
-    case post = "POST" // update or replace data
-    case delete = "DELETE" // delete data
-    
+    case get = "GET"
+    case put = "PUT"
+    case post = "POST"
+    case delete = "DELETE"
 }
+
 class MovieController {
-    
     // MARK: - Properties
     // API
     private let apiKey = "4cc920dab8b729a619647ccc4d191d5e"
@@ -34,7 +32,6 @@ class MovieController {
     func searchForMovie(with searchTerm: String, completion: @escaping (Error?) -> Void) {
         
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
-        
         let queryParameters = ["query": searchTerm,
                                "api_key": apiKey]
         
@@ -112,35 +109,26 @@ class MovieController {
     
     func updateMovie(with representations: [MovieRepresentation]) {
         
-        
         let identifiersToFetch = representations.compactMap({ $0.identifier?.uuidString })
-        
         let representationsByID = Dictionary(uniqueKeysWithValues: zip(identifiersToFetch, representations))
-        
-        var tasksToCreate = representationsByID
-        
         let context = CoreDataStack.shared.backgroundContext
         
+        var tasksToCreate = representationsByID
         context.performAndWait {
             
             do {
-                
-                
                 let fetchRequest: NSFetchRequest<Movie> = Movie.fetchRequest()
-                
                 fetchRequest.predicate = NSPredicate(format: "identifier IN %@", identifiersToFetch)
                 
                 let existingTasks = try context.fetch(fetchRequest)
                 
                 for movie in existingTasks {
                     guard let identifier = movie.identifier,
-                        
                         let representation = representationsByID[identifier] else { continue }
                     
                     movie.title = representation.title
                     movie.identifier = representation.identifier?.uuidString
                     movie.hasWatched = representation.hasWatched!
-                    
                     tasksToCreate.removeValue(forKey: identifier)
                 }
                 
@@ -157,7 +145,7 @@ class MovieController {
     }
     
     func deleteEntryFromServer(movie: Movie, completion: @escaping (Error?) -> Void ) {
-        
+
         guard let identifier = movie.identifier else {return}
         
         let requestURL = base
@@ -180,13 +168,11 @@ class MovieController {
         let movie = Movie(title: title)
         CoreDataStack.shared.save()
         put(movie: movie!)
-        
     }
     
     func updateMovie(movie: Movie, hasWatched: Bool) {
         
         movie.hasWatched = hasWatched
-        
         CoreDataStack.shared.save()
         put(movie: movie)
     }
@@ -201,7 +187,6 @@ class MovieController {
             }
             context.delete(movie)
             CoreDataStack.shared.save()
-            
         }
     }
 }

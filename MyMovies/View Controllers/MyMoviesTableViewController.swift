@@ -37,7 +37,6 @@ class MyMoviesTableViewController: UITableViewController {
     // View
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,7 +62,6 @@ class MyMoviesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
         if section == 0 {
             return "Unwatched"
         } else {

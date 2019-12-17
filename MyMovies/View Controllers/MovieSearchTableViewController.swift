@@ -12,27 +12,21 @@ class MovieSearchTableViewController: UITableViewController, UISearchBarDelegate
     // MARK: - Outlets
      @IBOutlet weak var searchBar: UISearchBar!
     
-    
     // MARK: - Properties
     var movieController = MovieController()
-    
     
     // MARK: - Methods
     // View
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         searchBar.delegate = self
     }
 
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchTerm = searchBar.text else { return }
-        
         movieController.searchForMovie(with: searchTerm) { (error) in
             
             guard error == nil else { return }
-            
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -48,7 +42,6 @@ class MovieSearchTableViewController: UITableViewController, UISearchBarDelegate
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as? SearchTableViewCell else { return UITableViewCell()}
         
         cell.movie = movieController.searchedMovies[indexPath.row]
- 
         cell.movieController = movieController
         
         return cell
