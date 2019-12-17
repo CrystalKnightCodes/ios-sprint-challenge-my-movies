@@ -44,5 +44,6 @@ class SearchTableViewCell: UITableViewCell {
         guard let title = titleLabel.text else {return}
         movieController?.createMovie(with: title)
         CoreDataStack.shared.save()
+
     }
 }

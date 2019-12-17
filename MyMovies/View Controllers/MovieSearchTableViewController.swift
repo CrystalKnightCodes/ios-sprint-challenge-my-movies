@@ -24,10 +24,7 @@ class MovieSearchTableViewController: UITableViewController, UISearchBarDelegate
         
         searchBar.delegate = self
     }
-    // Buttons
-    @objc func addMovieButtonTapped() {
-        
-    }
+
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchTerm = searchBar.text else { return }
